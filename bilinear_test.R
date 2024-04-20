@@ -79,3 +79,41 @@ png("setas.png", width = 720, height = 720)
 vectorField(Field,scale = 0.005, size = 1)
   
 dev.off()
+
+#setando a curva para a integral de linha
+posicaoInicialX = -99
+posicaoInicialY = 37
+posicaoFinalX = -92
+posicaoFinalY = 45
+deltaX = posicaoFinalX - posicaoInicialX
+deltaY = posicaoFinalY - posicaoInicialY
+angulo = deltaY / deltaX
+c = posicaoInicialY - angulo * posicaoInicialX
+
+curva <- function(t){
+  (angulo * t) + c
+}
+
+#descobrindo os pontos para a interpolação linear
+tInicial = 0
+tFinal = 1
+deltaT = tFinal - tInicial
+xEmT <- function(t) (deltaX / deltaT) * t + posicaoInicialX
+yEmT <- function(t) (deltaY / deltaT) * t + posicaoInicialY
+
+ModuloDeT = sqrt((deltaX * deltaX) + (deltaY * deltaY))
+
+#distancia entre pontos para serem interpolados
+nPontos = 5
+dep = deltaT / nPontos #distancia entre pontos
+
+#coordenadas para os valores na curva
+coordsVCX <- 0:nPontos #coordenadas para os valores da curva em x
+coordsVCY <- 0:nPontos #coordenadas para os valores da curva em y
+for(i in 1:(nPontos + 1))
+{
+  coordsVCX[i] <- xEmT(dep*(i-1))
+  coordsVCY[i] <- yEmT(dep*(i-1))
+}
+coordsVCX
+coordsVCY
